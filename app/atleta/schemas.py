@@ -1,6 +1,6 @@
 from datetime import datetime
 from pydantic import Field, PositiveFloat, UUID4, BaseModel
-from typing import Annotated
+from typing import Annotated, Optional
 import uuid
 
 
@@ -45,3 +45,16 @@ class AtletaResponse(AtletaCreate):
 
     class Config:
         from_attributes = True
+
+class AtletaUpdate(BaseModel):
+    nome: Optional[str]
+    cpf: Optional[str]
+    idade: Optional[int]
+    peso: Optional[float]
+    altura: Optional[float]
+    sexo: Optional[str]
+    categoria_id: Optional[UUID4]
+    centro_treinamento_id: Optional[UUID4]
+
+    class Config:
+        extra = "forbib"
