@@ -24,10 +24,6 @@ class AtletaCreate(BaseModel):
     class Config:
         extra = "forbid"
 
-from uuid import UUID
-from pydantic import Field, BaseModel, PositiveFloat
-from typing import Annotated
-from datetime import datetime
 
 class AtletaCreate(BaseModel):
     nome: Annotated[str, Field(description="Nome do atleta", example="José", max_length=50)]

@@ -1,6 +1,7 @@
 from fastapi import APIRouter, HTTPException, Depends, status
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
+from sqlalchemy.exc import IntegrityError
 from app.config.database import get_async_session
 from app.atleta.schemas import AtletaCreate, AtletaResponse
 from app.atleta.models import AtletaModel
