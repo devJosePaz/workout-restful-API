@@ -45,26 +45,49 @@ async def listar_atletas(db: AsyncSession = Depends(get_async_session)):
 
     return atletas
 
+
 @router.patch("/{atleta_id}", response_model=AtletaUpdate, status_code=status.HTTP_202_ACCEPTED)
 async def atualizar_atleta(atleta_id: UUID, atleta_dados: AtletaUpdate, db: AsyncSession = Depends(get_async_session)):
     result = await db.execute(select(AtletaModel).where(AtletaModel.pk_id == atleta_id))
     atleta = result.scalars().first()
+
+    dados_atualizados = atleta_dados.dict(exclude_unset=True)
+
+    if 'cpf' in dados_atualizados and atleta != dados_atualizados['cpf']:
+        result_cpf = await db.execute(select(AtletaModel).where(AtletaModel.cpf == dados_atualizados['cpf']))
+        cpf_duplicado = result.scalars().first()
+        if cpf_duplicado:
+            raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="erro. CPF j[a está em uso.")
+    
+    for campo, valor in dados_atualizados.items():
+        setattr(atleta, campo, valor)
 
     try:
         await db.commit()
         await db.refresh(atleta)
     except IntegrityError:
         await db.rollback()
-        raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="erro: conflito de integridade")
+        raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="erro. conflito de integridade.")
 
     return atleta
 
+@router.delete("/{atleta_id}", status_code=status.HTTP_204_NO_CONTENT)
+async def deletar_atleta(atleta_id: UUID, db: AsyncSession = Depends(get_async_session)):
+    result = await db.execute(select(AtletaModel).where(AtletaModel.pk_id == atleta_id))
+    atleta = result.scalars().first()
+
+    if not atleta: 
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="erro. atleta não encontrado.")
+
+    await db.delete(atleta)
+    await db.commit()
+    
+
+
+
 
 
 
     
 
-    
 
-    
-    
