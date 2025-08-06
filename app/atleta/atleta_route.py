@@ -65,7 +65,7 @@ async def atualizar_atleta(atleta_id: UUID, atleta_dados: AtletaUpdate, db: Asyn
 
     dados_atualizados = atleta_dados.dict(exclude_unset=True)
 
-    if 'cpf' in dados_atualizados and atleta != dados_atualizados['cpf']:
+    if 'cpf' in dados_atualizados and atleta.cpf != dados_atualizados['cpf']:
         result_cpf = await db.execute(select(AtletaModel).where(AtletaModel.cpf == dados_atualizados['cpf']))
         cpf_duplicado = result.scalars().first()
         if cpf_duplicado:
