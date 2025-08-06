@@ -71,7 +71,7 @@ async def atualizar_centro_treinamento(centro_treinamento_id: UUID, centro_trein
 
     return centro_treinamento
 
-@router.delete("/{centro_treinamento_id}", response_model=CentroTreinamentoResponse, status_code=status.HTTP_202_ACCEPTED)
+@router.delete("/{centro_treinamento_id}", status_code=status.HTTP_204_NO_CONTENT)
 async def deletar_centro_treinamento(centro_treinamento_id: UUID, db: AsyncSession = Depends(get_async_session)):
     result = await db.execute(select(CentroTreinamentoModel).where(CentroTreinamentoModel.pk_id == centro_treinamento_id))
     centro_treinamento = result.scalars().first()
@@ -82,7 +82,7 @@ async def deletar_centro_treinamento(centro_treinamento_id: UUID, db: AsyncSessi
     await db.delete(centro_treinamento)
     await db.commit()
 
-    return centro_treinamento
+
 
     
 
