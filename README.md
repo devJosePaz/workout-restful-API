@@ -18,7 +18,6 @@ A API foi estruturada para lidar com as seguintes entidades:
 - **Atleta**
 - **Centro de Treinamento**
 - **Categoria**
-- **Completo** (registro que liga as demais entidades)
 
 ## 🔁 Diferença entre PUT e PATCH
 
