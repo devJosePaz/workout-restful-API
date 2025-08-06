@@ -70,7 +70,7 @@ async def atualizar_categoria(categoria_dados: CategoriaCreate, categoria_id: UU
 
     return categoria
 
-@router.delete("/{categoria_id}", response_model=CategoriaResponse, status_code=status.HTTP_204_NO_CONTENT)
+@router.delete("/{categoria_id}", status_code=status.HTTP_204_NO_CONTENT)
 async def deletar_categoria(categoria_id: UUID, db: AsyncSession = Depends(get_async_session)):
     result = await db.execute(select(CategoriaModel).where(CategoriaModel.pk_id == categoria_id))
     categoria = result.scalars().first()
