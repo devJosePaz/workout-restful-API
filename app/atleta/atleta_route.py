@@ -67,7 +67,7 @@ async def atualizar_atleta(atleta_id: UUID, atleta_dados: AtletaUpdate, db: Asyn
 
     if 'cpf' in dados_atualizados and atleta.cpf != dados_atualizados['cpf']:
         result_cpf = await db.execute(select(AtletaModel).where(AtletaModel.cpf == dados_atualizados['cpf']))
-        cpf_duplicado = result.scalars().first()
+        cpf_duplicado = result_cpf.scalars().first()
         if cpf_duplicado:
             raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="erro. CPF j[a está em uso.")
     
