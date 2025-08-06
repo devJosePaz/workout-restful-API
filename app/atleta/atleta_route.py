@@ -46,6 +46,18 @@ async def listar_atletas(db: AsyncSession = Depends(get_async_session)):
     return atletas
 
 
+@router.get("/{atleta_id}", response_model=AtletaResponse, status_code=status.HTTP_200_OK)
+async def listar_atleta_id(atleta_id: UUID, db: AsyncSession = Depends(get_async_session)):
+    result =  await db.execute(select(AtletaModel).where(AtletaModel.pk_id == atleta_id))
+    atleta = result.scalars().first()
+
+    if not atleta:
+        raise HTTPException(status_code=404, detail="erro: atleta não encontrado com o ID digitado")
+
+    return atleta
+
+
+
 @router.patch("/{atleta_id}", response_model=AtletaUpdate, status_code=status.HTTP_202_ACCEPTED)
 async def atualizar_atleta(atleta_id: UUID, atleta_dados: AtletaUpdate, db: AsyncSession = Depends(get_async_session)):
     result = await db.execute(select(AtletaModel).where(AtletaModel.pk_id == atleta_id))
