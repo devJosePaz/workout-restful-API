@@ -57,4 +57,4 @@ class AtletaUpdate(BaseModel):
     centro_treinamento_id: Optional[UUID4]
 
     class Config:
-        extra = "forbib"
+        extra = "forbid"
